@@ -48,7 +48,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 throw new Error("This email cannot be registered as an admin");
             }
 
-            localStorage.setItem("accessToken", data.accessToken)
+            localStorage.setItem("UFO_AUTH_TOKEN", data.accessToken)
             router.push("/")
         } catch (err) {
             if (err instanceof Error) {
