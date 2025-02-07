@@ -10,7 +10,7 @@ import { DataTableRowActions } from "@/components/data-table-row-actions"
 export type Order = {
     id: string
     amount: number
-    status: "pending" | "processing" | "success" | "failed"
+    status: string
     email: string
 }
 
@@ -62,7 +62,7 @@ export const columns: ColumnDef<Order>[] = [
         header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
         cell: ({ row }) => {
             const status = row.getValue("status") as string
-            return <Badge variant={status === "success" ? "default" : "secondary"}>{status}</Badge>
+            return <Badge variant={status.toLowerCase() === "success" ? "default" : "secondary"}>{status}</Badge>
         },
         enableSorting: true,
         enableHiding: true,
