@@ -1,11 +1,10 @@
-import { Github, Loader2, type LightbulbIcon as LucideProps, Moon, SunMedium, Twitter, User } from "lucide-react"
+import { Loader2, type LightbulbIcon as LucideProps, Moon, SunMedium, Twitter, User } from "lucide-react"
 
 export const Icons = {
     sun: SunMedium,
     moon: Moon,
     twitter: Twitter,
     user: User,
-    github: Github,
     spinner: Loader2,
     logo: (props: typeof LucideProps) => (
         <svg
