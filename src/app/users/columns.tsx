@@ -12,7 +12,7 @@ export type User = {
     name: string
     email: string
     role: string
-    status: "Active" | "Inactive"
+    status: "active" | "inactive"
 }
 
 export const columns: ColumnDef<User>[] = [
@@ -40,7 +40,7 @@ export const columns: ColumnDef<User>[] = [
     {
         accessorKey: "name",
         header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
-        cell: ({ row }) => <div>{row.getValue("name")}</div>,
+        cell: ({ row }) => <div className="w-[80px]">{row.getValue("name")}</div>,
         enableSorting: true,
         enableHiding: true,
     },
@@ -63,7 +63,7 @@ export const columns: ColumnDef<User>[] = [
         header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
         cell: ({ row }) => {
             const status = row.getValue("status") as string
-            return <Badge variant={status === "Active" ? "default" : "secondary"}>{status}</Badge>
+            return <Badge variant={status === "active" ? "default" : "secondary"}>{status}</Badge>
         },
         enableSorting: true,
         enableHiding: true,
