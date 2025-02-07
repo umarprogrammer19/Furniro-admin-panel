@@ -12,7 +12,7 @@ export type User = {
     name: string
     email: string
     role: string
-    status: "active" | "inactive"
+    status: string
 }
 
 export const columns: ColumnDef<User>[] = [
@@ -63,7 +63,7 @@ export const columns: ColumnDef<User>[] = [
         header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
         cell: ({ row }) => {
             const status = row.getValue("status") as string
-            return <Badge variant={status === "active" ? "default" : "secondary"}>{status}</Badge>
+            return <Badge variant={status.toLowerCase() === "active" ? "default" : "secondary"}>{status}</Badge>
         },
         enableSorting: true,
         enableHiding: true,

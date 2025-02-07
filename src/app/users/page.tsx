@@ -1,7 +1,7 @@
 import { DataTable } from "@/components/data-table"
-import { columns } from "./columns"
+import { columns, type User } from "./columns"
 
-async function getUsers() {
+async function getUsers(): Promise<User[]> {
     // Fetch users from an API here
     return [
         {
