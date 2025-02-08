@@ -41,8 +41,8 @@ export default function UsersPage() {
                 }))
 
                 setUsers(formattedUsers)
-                setCurrentPage(data.currentPage) // Set current page from API
-                setTotalPages(data.totalPages) // Set total pages from API
+                setCurrentPage(data.currentPage)
+                setTotalPages(data.totalPages)
             } catch (err: any) {
                 setError(err.message)
             } finally {
@@ -51,7 +51,7 @@ export default function UsersPage() {
         }
 
         fetchUsers(currentPage)
-    }, [currentPage]) // Fetch users whenever the page changes
+    }, [currentPage])
 
     return (
         <div className="space-y-4">
@@ -66,7 +66,7 @@ export default function UsersPage() {
                     <DataTablePagination
                         currentPage={currentPage}
                         totalPages={totalPages}
-                        onPageChange={setCurrentPage} // Update page when changed
+                        onPageChange={setCurrentPage}
                     />
                 </>
             )}
