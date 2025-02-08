@@ -4,6 +4,7 @@ import * as React from "react"
 import { DataTable } from "@/components/data-table"
 import { columns, type User } from "./columns"
 import { DataTablePagination } from "@/components/data-table-pagination"
+import { BASE_URL } from "@/lib/api/base-url"
 
 export default function UsersPage() {
     const [users, setUsers] = React.useState<User[]>([])
@@ -18,7 +19,7 @@ export default function UsersPage() {
             setError(null)
 
             try {
-                const response = await fetch(`http://localhost:8080/api/admin/users?page=${page}`, {
+                const response = await fetch(`${BASE_URL}/api/admin/users?page=${page}`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
