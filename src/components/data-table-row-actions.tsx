@@ -17,7 +17,6 @@ interface DataTableRowActionsProps {
 
 export function DataTableRowActions({ userId }: DataTableRowActionsProps) {
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
 
     const handleEdit = () => {
         console.log("Edit user with ID:", userId);
@@ -40,9 +39,12 @@ export function DataTableRowActions({ userId }: DataTableRowActionsProps) {
             }
 
             toast.success("User deleted successfully!");
-        } catch (error: any) {
-            setError(error.message || "Something went wrong. Please try again later.");
-            console.error(error);
+        } catch (error) {
+            if (error instanceof Error) {
+                toast.error(error.message)
+            } else {
+                toast.error("An unexpected error occurred")
+            }
         } finally {
             setLoading(false);
         }
