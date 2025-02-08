@@ -5,6 +5,7 @@ import { DataTable } from "@/components/data-table"
 import { columns, type User } from "./columns"
 import { DataTablePagination } from "@/components/data-table-pagination"
 import { BASE_URL } from "@/lib/api/base-url"
+import { useRouter } from "next/navigation"
 
 export default function UsersPage() {
     const [users, setUsers] = React.useState<User[]>([])
@@ -12,7 +13,11 @@ export default function UsersPage() {
     const [error, setError] = React.useState<string | null>(null)
     const [currentPage, setCurrentPage] = React.useState<number>(1)
     const [totalPages, setTotalPages] = React.useState<number>(1)
-
+    const router = useRouter();
+    React.useEffect(() => {
+        const token = localStorage.getItem("UFO_AUTH_TOKEN");
+        if (!token) router.push("/login");
+    }, [])
     React.useEffect(() => {
         async function fetchUsers(page: number) {
             setLoading(true)
