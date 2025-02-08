@@ -1,5 +1,5 @@
+"use client";
 import { useRouter } from "next/navigation";
-import { type Product } from "./columns"
 import React from "react";
 
 // async function getProducts(): Promise<Product[]> {

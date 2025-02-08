@@ -1,4 +1,4 @@
-
+"use client";
 // async function getOrders() {
 //     // Fetch orders from an API here
 //     return [
