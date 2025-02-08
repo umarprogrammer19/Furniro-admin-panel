@@ -21,7 +21,7 @@
 import { useRouter } from "next/navigation";
 import React from "react";
 
-export default async function OrdersPage() {
+export default function OrdersPage() {
     // const orders = await getOrders()
     const router = useRouter();
     React.useEffect(() => {
