@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Overview } from "@/components/overview"
 import { RecentSales } from "@/components/recent-sales"
+import { BASE_URL } from "@/lib/api/base-url"
 
 export default function DashboardPage() {
   const [orders, setOrders] = useState<any[]>([])
@@ -12,7 +13,7 @@ export default function DashboardPage() {
   useEffect(() => {
     // Fetch data from the API
     const fetchOrders = async () => {
-      const response = await fetch("http://localhost:8080/api/admin/orders", {
+      const response = await fetch(`${BASE_URL}/api/admin/orders`, {
         headers: {
           "Authorization": `Bearer ${localStorage.getItem("UFO_AUTH_TOKEN")}`,
         },

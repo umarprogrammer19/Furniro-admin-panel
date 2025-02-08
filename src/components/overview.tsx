@@ -7,7 +7,6 @@ interface OverviewProps {
 }
 
 export function Overview({ orders }: OverviewProps) {
-    // Group orders by day (use day and month to make the date unique)
     const groupedOrders = orders.reduce((acc, order) => {
         const day = new Date(order.orderDate).toLocaleDateString("en-US")
         if (!acc[day]) acc[day] = 0
@@ -15,7 +14,6 @@ export function Overview({ orders }: OverviewProps) {
         return acc
     }, {})
 
-    // Create data for the chart (grouped by day)
     const data = Object.keys(groupedOrders).map((day) => ({
         name: day,
         total: groupedOrders[day],
