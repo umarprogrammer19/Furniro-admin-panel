@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 import { BASE_URL } from "@/lib/api/base-url"
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
+type UserAuthFormProps = React.HTMLAttributes<HTMLDivElement>;
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     const [isLoading, setIsLoading] = React.useState<boolean>(false)

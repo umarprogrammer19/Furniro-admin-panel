@@ -1,13 +1,13 @@
 "use client"
 
-import { useState } from "react"
 import { DotsHorizontalIcon } from "@radix-ui/react-icons"
+import { useState } from "react"
 import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { Input } from "@/components/ui/input"
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { BASE_URL } from "@/lib/api/base-url"
 
 interface DataTableRowActionsProps {
@@ -39,7 +39,7 @@ export function DataTableRowActions({ userId }: DataTableRowActionsProps) {
 
     const validateForm = () => {
         let valid = true
-        let newErrors = {
+        const newErrors = {
             fullname: "",
             email: "",
             password: "",
@@ -72,7 +72,7 @@ export function DataTableRowActions({ userId }: DataTableRowActionsProps) {
         const isValid = validateForm()
 
         if (!isValid) return
-        
+
         try {
             setLoading(true)
 
@@ -151,7 +151,7 @@ export function DataTableRowActions({ userId }: DataTableRowActionsProps) {
                     <SheetHeader>
                         <SheetTitle>Edit User</SheetTitle>
                         <SheetDescription>
-                            Make changes to the user's information here. Click save when you're done.
+                            Make changes to the user&apos;s information here. Click save when you&apos;re done.
                         </SheetDescription>
                     </SheetHeader>
                     <div className="space-y-4 mt-4">

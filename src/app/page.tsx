@@ -1,14 +1,20 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Overview } from "@/components/overview"
 import { RecentSales } from "@/components/recent-sales"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { BASE_URL } from "@/lib/api/base-url"
+import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
 
 export default function DashboardPage() {
   const [orders, setOrders] = useState<any[]>([])
   const [totalRevenue, setTotalRevenue] = useState(0)
+  const router = useRouter();
+  useEffect(() => {
+    const token = localStorage.getItem("UFO_AUTH_TOKEN");
+    if (!token) router.push("/login");
+  }, [])
 
   useEffect(() => {
     // Fetch data from the API
@@ -32,7 +38,8 @@ export default function DashboardPage() {
     }
 
     fetchOrders()
-  }, [])
+  }, []);
+
 
   return (
     <div className="space-y-8">
