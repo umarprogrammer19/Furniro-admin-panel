@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { Input } from "@/components/ui/input"
+import { BASE_URL } from "@/lib/api/base-url"
 
 interface DataTableRowActionsProps {
     userId: string
@@ -70,12 +71,12 @@ export function DataTableRowActions({ userId }: DataTableRowActionsProps) {
     const handleSubmitEdit = async () => {
         const isValid = validateForm()
 
-        if (!isValid) return // Stop if validation fails
-
+        if (!isValid) return
+        
         try {
             setLoading(true)
 
-            const response = await fetch(`http://localhost:8080/api/admin/users/update/${userId}`, {
+            const response = await fetch(`${BASE_URL}/api/admin/users/update/${userId}`, {
                 method: "PATCH",
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("UFO_AUTH_TOKEN")}`,
@@ -105,7 +106,7 @@ export function DataTableRowActions({ userId }: DataTableRowActionsProps) {
         try {
             setLoading(true)
 
-            const response = await fetch(`http://localhost:8080/api/admin/users/delete/${userId}`, {
+            const response = await fetch(`${BASE_URL}/api/admin/users/delete/${userId}`, {
                 method: "DELETE",
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("UFO_AUTH_TOKEN")}`,
