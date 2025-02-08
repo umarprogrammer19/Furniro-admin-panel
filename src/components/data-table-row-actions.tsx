@@ -1,3 +1,4 @@
+"use client";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 import { Button } from "@/components/ui/button"
 import {
@@ -6,6 +7,8 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
+import { useState } from "react";
+import { toast } from "sonner";
 
 // Accept userId prop
 interface DataTableRowActionsProps {
@@ -13,14 +16,36 @@ interface DataTableRowActionsProps {
 }
 
 export function DataTableRowActions({ userId }: DataTableRowActionsProps) {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
     const handleEdit = () => {
         console.log("Edit user with ID:", userId);
         // Add your edit logic here
     }
 
-    const handleDelete = () => {
-        console.log("Delete user with ID:", userId);
-        // Add your delete logic here
+
+    const handleDelete = async () => {
+        try {
+            setLoading(true);
+            const response = await fetch(`http://localhost:8080/api/admin/users/delete/${userId}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("UFO_AUTH_TOKEN")}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to delete the user.");
+            }
+
+            toast.success("User deleted successfully!");
+        } catch (error: any) {
+            setError(error.message || "Something went wrong. Please try again later.");
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
@@ -34,7 +59,7 @@ export function DataTableRowActions({ userId }: DataTableRowActionsProps) {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-[160px]">
                     <DropdownMenuItem onClick={handleEdit}>Edit</DropdownMenuItem>
-                    <DropdownMenuItem onClick={handleDelete}>Delete</DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleDelete}>{loading ? "Deletin..." : "Delete"}</DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
         </div>
