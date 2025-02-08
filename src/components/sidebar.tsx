@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { motion } from "framer-motion"
-import { type LucideIcon, Home, Users, ShoppingCart, Package, LogOut } from "lucide-react"
+import { type LucideIcon, Home, Users, ShoppingCart, Package, LogOut, LogIn } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { ModeToggle } from "@/components/mode-toggle"
@@ -27,7 +27,7 @@ export function Sidebar() {
 
     const handleLogout = () => {
         localStorage.removeItem("UFO_AUTH_TOKEN");
-        router.refresh();
+        router.push("/login");
     }
     return (
         <div className="flex h-full w-64 flex-col justify-between bg-background p-4 shadow-lg">
@@ -49,10 +49,13 @@ export function Sidebar() {
             </div>
             <div className="space-y-4">
                 <ModeToggle />
-                <Button variant="ghost" className="w-full justify-start" onClick={handleLogout}>
+                {localStorage.getItem("UFO_AUTH_TOKEN") ? <Button variant="ghost" className="w-full justify-start" onClick={handleLogout}>
                     <LogOut className="mr-2 h-4 w-4" />
                     Logout
-                </Button>
+                </Button> : <Button variant="ghost" className="w-full justify-start" onClick={() => router.push("/login")}>
+                    <LogIn className="mr-2 h-4 w-4" />
+                    Login
+                </Button>}
             </div>
         </div>
     )
