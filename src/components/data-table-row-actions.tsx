@@ -1,8 +1,4 @@
-"use client"
-
 import { DotsHorizontalIcon } from "@radix-ui/react-icons"
-import type { Row } from "@tanstack/react-table"
-
 import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
@@ -11,8 +7,22 @@ import {
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
 
+// Accept userId prop
+interface DataTableRowActionsProps {
+    userId: string
+}
 
-export function DataTableRowActions() {
+export function DataTableRowActions({ userId }: DataTableRowActionsProps) {
+    const handleEdit = () => {
+        console.log("Edit user with ID:", userId);
+        // Add your edit logic here
+    }
+
+    const handleDelete = () => {
+        console.log("Delete user with ID:", userId);
+        // Add your delete logic here
+    }
+
     return (
         <div className="flex items-center pt-2">
             <DropdownMenu>
@@ -23,11 +33,10 @@ export function DataTableRowActions() {
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-[160px]">
-                    <DropdownMenuItem>Edit</DropdownMenuItem>
-                    <DropdownMenuItem>Delete</DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleEdit}>Edit</DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleDelete}>Delete</DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
         </div>
     )
 }
-
