@@ -1,8 +1,38 @@
+"use client"
+
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Overview } from "@/components/overview"
 import { RecentSales } from "@/components/recent-sales"
 
 export default function DashboardPage() {
+  const [orders, setOrders] = useState<any[]>([])
+  const [totalRevenue, setTotalRevenue] = useState(0)
+
+  useEffect(() => {
+    // Fetch data from the API
+    const fetchOrders = async () => {
+      const response = await fetch("http://localhost:8080/api/admin/orders", {
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem("UFO_AUTH_TOKEN")}`,
+        },
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setOrders(data.orders)
+
+        // Calculate total revenue
+        const revenue = data.orders.reduce((total: number, order: { totalPrice: number }) => total + order.totalPrice, 0)
+        setTotalRevenue(revenue)
+      } else {
+        console.error("Failed to fetch orders")
+      }
+    }
+
+    fetchOrders()
+  }, [])
+
   return (
     <div className="space-y-8">
       <h1 className="text-3xl font-bold">Dashboard</h1>
@@ -24,7 +54,7 @@ export default function DashboardPage() {
             </svg>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$45,231.89</div>
+            <div className="text-2xl font-bold">${totalRevenue.toFixed(2)}</div>
             <p className="text-xs text-muted-foreground">+20.1% from last month</p>
           </CardContent>
         </Card>
@@ -101,19 +131,18 @@ export default function DashboardPage() {
             <CardTitle>Overview</CardTitle>
           </CardHeader>
           <CardContent className="pl-2">
-            <Overview />
+            <Overview orders={orders} />
           </CardContent>
         </Card>
         <Card className="col-span-3">
           <CardHeader>
             <CardTitle>Recent Sales</CardTitle>
-            <CardContent>
-              <RecentSales />
-            </CardContent>
           </CardHeader>
+          <CardContent>
+            <RecentSales orders={orders} />
+          </CardContent>
         </Card>
       </div>
     </div>
   )
 }
-
