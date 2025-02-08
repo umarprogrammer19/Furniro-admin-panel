@@ -15,6 +15,7 @@ import {
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { DataTableToolbar } from "@/components/data-table-toolbar"
+import { DataTableRowActions } from "./data-table-row-actions"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -69,6 +70,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                                     ))}
+                                    <DataTableRowActions />
                                 </TableRow>
                             ))
                         ) : (

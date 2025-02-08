@@ -11,11 +11,8 @@ import {
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
 
-interface DataTableRowActionsProps<TData> {
-    row: Row<TData>
-}
 
-export function DataTableRowActions<TData>({ row }: DataTableRowActionsProps<TData>) {
+export function DataTableRowActions() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
