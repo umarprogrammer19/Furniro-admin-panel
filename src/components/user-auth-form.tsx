@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
 import { useRouter } from "next/navigation"
+import { BASE_URL } from "@/lib/api/base-url"
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 
@@ -29,7 +30,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         setError(null)
 
         try {
-            const response = await fetch("http://localhost:8080/api/admin/auth/login", {
+            const response = await fetch(`${BASE_URL}/api/admin/auth/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
