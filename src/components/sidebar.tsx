@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { type LucideIcon, Home, Users, ShoppingCart, Package, LogOut } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -22,8 +22,13 @@ const navItems: NavItem[] = [
 ]
 
 export function Sidebar() {
-    const pathname = usePathname()
+    const pathname = usePathname();
+    const router = useRouter();
 
+    const handleLogout = () => {
+        localStorage.removeItem("UFO_AUTH_TOKEN");
+        router.refresh();
+    }
     return (
         <div className="flex h-full w-64 flex-col justify-between bg-background p-4 shadow-lg">
             <div>
@@ -44,7 +49,7 @@ export function Sidebar() {
             </div>
             <div className="space-y-4">
                 <ModeToggle />
-                <Button variant="ghost" className="w-full justify-start">
+                <Button variant="ghost" className="w-full justify-start" onClick={handleLogout}>
                     <LogOut className="mr-2 h-4 w-4" />
                     Logout
                 </Button>
