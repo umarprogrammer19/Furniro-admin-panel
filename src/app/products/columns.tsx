@@ -75,9 +75,5 @@ export const columns: ColumnDef<Product>[] = [
         enableSorting: true,
         enableHiding: true,
     },
-    {
-        id: "actions",
-        cell: ({ row }) => <DataTableRowActions row={row} />,
-    },
 ]
 
