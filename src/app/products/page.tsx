@@ -1,40 +1,50 @@
 "use client";
+import { DataTable } from "@/components/data-table";
 import { useRouter } from "next/navigation";
-import React from "react";
-
-// async function getProducts(): Promise<Product[]> {
-//     // Fetch products from an API here
-//     return [
-//         {
-//             id: "PROD-1",
-//             name: "Product 1",
-//             category: "Category A",
-//             price: 19.99,
-//             stock: 100,
-//         },
-//         {
-//             id: "PROD-2",
-//             name: "Product 2",
-//             category: "Category B",
-//             price: 29.99,
-//             stock: 50,
-//         },
-//         // Add more product data here
-//     ]
-// }
+import { useEffect, useState } from "react";
+import { columns } from "./columns";
+import { BASE_URL } from "@/lib/api/base-url";
 
 export default function ProductsPage() {
-    // const products = await getProducts()
     const router = useRouter();
-    React.useEffect(() => {
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string>("");
+
+    useEffect(() => {
         const token = localStorage.getItem("UFO_AUTH_TOKEN");
-        if (!token) router.push("/login");
-    }, [])
+        if (!token) {
+            router.push("/login");
+            return;
+        }
+
+        const fetchProducts = async () => {
+            try {
+                const response = await fetch(`${BASE_URL}/api/v2/products?page=1&limit=10`);
+                if (!response.ok) throw new Error("Failed to fetch products");
+                const data = await response.json();
+                setProducts(data.products);
+            } catch (error) {
+                if (error instanceof Error) {
+                    setError(error.message);
+                } else {
+                    setError("An unexpected error occurred")
+                }
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchProducts();
+    }, [router]);
+
+    if (loading) return <p className="text-center text-xl font-semibold">Loading...</p>;
+    if (error) return <p className="text-center text-red-500">Error: {error}</p>;
+
     return (
         <div className="space-y-4">
             <h1 className="text-3xl font-bold">Products</h1>
-            {/* <DataTable columns={columns} data={products} /> */}
+            <DataTable columns={columns} data={products} />
         </div>
     )
 }
-
