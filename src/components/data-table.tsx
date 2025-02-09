@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import {
     type ColumnDef,
     type ColumnFiltersState,
@@ -12,9 +11,10 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
+import * as React from "react";
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DataTableToolbar } from "@/components/data-table-toolbar";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DataTableRowActions } from "./data-table-row-actions";
 
 // Generic Table Type -> Ab Users aur Products dono kaam kar sakte hain
@@ -24,7 +24,7 @@ interface DataTableProps<TData, TValue> {
     rowActions?: boolean; // Users ke liye true, Products ke liye false
 }
 
-export function DataTable<TData, TValue>({ columns, data, rowActions = false }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
     const [rowSelection, setRowSelection] = React.useState({});
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
