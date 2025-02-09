@@ -19,7 +19,7 @@ export default function DashboardPage() {
   useEffect(() => {
     // Fetch data from the API
     const fetchOrders = async () => {
-      const response = await fetch(`${BASE_URL}/api/admin/orders`, {
+      const response = await fetch(`${BASE_URL}/api/admin/orders?limit=1000`, {
         headers: {
           "Authorization": `Bearer ${localStorage.getItem("UFO_AUTH_TOKEN")}`,
         },
