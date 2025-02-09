@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
     type ColumnDef,
     type ColumnFiltersState,
@@ -11,23 +11,24 @@ import {
     getFilteredRowModel,
     getSortedRowModel,
     useReactTable,
-} from "@tanstack/react-table"
+} from "@tanstack/react-table";
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { DataTableToolbar } from "@/components/data-table-toolbar"
-import { DataTableRowActions } from "./data-table-row-actions"
-import { User } from "@/app/users/columns"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { DataTableToolbar } from "@/components/data-table-toolbar";
+import { DataTableRowActions } from "./data-table-row-actions";
 
+// Generic Table Type -> Ab Users aur Products dono kaam kar sakte hain
 interface DataTableProps<TData, TValue> {
-    columns: ColumnDef<TData, TValue>[]
-    data: TData[]
+    columns: ColumnDef<TData, TValue>[];
+    data: TData[];
+    rowActions?: boolean; // Users ke liye true, Products ke liye false
 }
 
-export function DataTable<TData extends User, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
-    const [rowSelection, setRowSelection] = React.useState({})
-    const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
-    const [sorting, setSorting] = React.useState<SortingState>([])
+export function DataTable<TData, TValue>({ columns, data, rowActions = false }: DataTableProps<TData, TValue>) {
+    const [rowSelection, setRowSelection] = React.useState({});
+    const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
+    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+    const [sorting, setSorting] = React.useState<SortingState>([]);
 
     const table = useReactTable({
         data,
@@ -46,7 +47,7 @@ export function DataTable<TData extends User, TValue>({ columns, data }: DataTab
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         getSortedRowModel: getSortedRowModel(),
-    })
+    });
 
     return (
         <div className="space-y-4">
@@ -71,7 +72,7 @@ export function DataTable<TData extends User, TValue>({ columns, data }: DataTab
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                                     ))}
-                                    <DataTableRowActions userId={row.original.id} />
+                                    <DataTableRowActions userId={(row.original as any).id} />
                                 </TableRow>
                             ))
                         ) : (
@@ -85,5 +86,5 @@ export function DataTable<TData extends User, TValue>({ columns, data }: DataTab
                 </Table>
             </div>
         </div>
-    )
+    );
 }
