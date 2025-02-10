@@ -27,11 +27,11 @@ export default function OrdersPage() {
             setError(null);
 
             try {
-                const response = await fetch(`${BASE_URL}/api/v2/orders?page=${page}&limit=10`, {
+                const response = await fetch(`${BASE_URL}/api/admin/orders?page=${page}&limit=12`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${localStorage.getItem("UFO_AUTH_TOKEN")}`,
+                        Authorization: `Bearer ${localStorage.getItem("UFO_AUTH_TOKEN")}`,
                     },
                 });
 
@@ -44,11 +44,11 @@ export default function OrdersPage() {
                 // Format API response correctly
                 const formattedOrders: Order[] = data.orders.map((order: any) => ({
                     _id: order._id,
-                    customer: order.user.fullname,
-                    email: order.user.email,
+                    customer: order.user ? order.user.fullname : "Guest",
+                    email: order.user ? order.user.email : "No Email",
                     totalPrice: order.totalPrice,
                     status: order.status,
-                    orderDate: new Date(order.orderDate).toLocaleDateString(),
+                    orderDate: new Date(order.orderDate).toLocaleDateString("en-US"),
                 }));
 
                 setOrders(formattedOrders);
@@ -73,7 +73,7 @@ export default function OrdersPage() {
                 <p className="text-red-500">{error}</p>
             ) : (
                 <>
-                    <DataTable columns={columns} data={orders} rowActions="orders"/>
+                    <DataTable columns={columns} data={orders} rowActions="orders" />
                     <DataTablePagination
                         currentPage={currentPage}
                         totalPages={totalPages}
