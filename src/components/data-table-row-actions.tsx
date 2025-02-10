@@ -24,14 +24,12 @@ export function DataTableRowActions({ userId, productId }: DataTableRowActionsPr
     const [isDrawerOpen, setDrawerOpen] = useState(false)
     const [isProductDrawerOpen, setProductDrawerOpen] = useState(false)
 
-    // User Form Data
     const [formData, setFormData] = useState({
         fullname: "",
         email: "",
         password: "",
     })
 
-    // Product Form Data
     const [productFormData, setProductFormData] = useState({
         title: "",
         description: "",
@@ -57,7 +55,6 @@ export function DataTableRowActions({ userId, productId }: DataTableRowActionsPr
         }))
     }
 
-    // **User Validation Function**
     const validateForm = () => {
         let valid = true
         const newErrors = { fullname: "", email: "", password: "" }
@@ -79,7 +76,7 @@ export function DataTableRowActions({ userId, productId }: DataTableRowActionsPr
         return valid
     }
 
-    // **Edit User API Request**
+    // Edit User API Request
     const handleSubmitUserEdit = async () => {
         if (!validateForm()) return
 
@@ -107,7 +104,7 @@ export function DataTableRowActions({ userId, productId }: DataTableRowActionsPr
         }
     }
 
-    // **Delete User API**
+    // Delete User API
     const handleUserDelete = async () => {
         try {
             setLoading(true)
@@ -130,7 +127,7 @@ export function DataTableRowActions({ userId, productId }: DataTableRowActionsPr
         }
     }
 
-    // **Delete Product API**
+    // Delete Product API
     const handleProductDelete = async () => {
         try {
             setLoading(true)
@@ -153,7 +150,7 @@ export function DataTableRowActions({ userId, productId }: DataTableRowActionsPr
         }
     }
 
-    // **Edit Product API Request**
+    // Edit Product API Request
     const handleSubmitProductEdit = async () => {
         try {
             setLoading(true)
@@ -179,10 +176,6 @@ export function DataTableRowActions({ userId, productId }: DataTableRowActionsPr
         }
     }
 
-    // **Empty Edit Function for Products**
-    const handleProductEdit = () => {
-        setProductDrawerOpen(true)
-    }
 
     return (
         <div className="flex items-center">
@@ -195,7 +188,7 @@ export function DataTableRowActions({ userId, productId }: DataTableRowActionsPr
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                     {userId && <DropdownMenuItem onSelect={() => setDrawerOpen(true)}>Edit</DropdownMenuItem>}
-                    {productId && <DropdownMenuItem onSelect={handleProductEdit}>Edit</DropdownMenuItem>}
+                    {productId && <DropdownMenuItem onSelect={() => setProductDrawerOpen(true)}>Edit</DropdownMenuItem>}
                     {userId && (
                         <DropdownMenuItem onSelect={handleUserDelete} className="text-red-600 focus:text-red-600">
                             Delete
