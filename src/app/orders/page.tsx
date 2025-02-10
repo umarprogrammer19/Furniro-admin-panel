@@ -6,8 +6,8 @@ import { DataTable } from "@/components/data-table";
 import { DataTablePagination } from "@/components/data-table-pagination";
 import { Skeleton } from "@/components/ui/skeleton";
 import { columns, type Order } from "./columns";
-import { useAuth } from "@/hooks/use-auth";
 import { fetchOrders } from "@/lib/api/fetchOrders";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function OrdersPage() {
     const [orders, setOrders] = React.useState<Order[]>([]);

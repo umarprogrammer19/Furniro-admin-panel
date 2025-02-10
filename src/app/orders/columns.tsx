@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from 'lucide-react';
 import { toast } from "sonner";
-import { updateOrderStatus } from "@/lib/api/orders";
+import { updateOrderStatus } from "@/lib/api/fetchOrders";
 
 export type Order = {
     _id: string;
@@ -89,7 +89,13 @@ export const columns: ColumnDef<Order>[] = [
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="h-8 w-full justify-start">
                             <Badge
-                                variant={currentStatus === "pending" ? "warning" : currentStatus === "completed" ? "success" : "info"}
+                                variant={
+                                    currentStatus === "pending"
+                                        ? "secondary"
+                                        : currentStatus === "completed"
+                                            ? "default"
+                                            : "outline"
+                                }
                             >
                                 {currentStatus}
                             </Badge>
