@@ -265,7 +265,7 @@ export function DataTableRowActions({ userId, productId }: DataTableRowActionsPr
                         <SheetHeader>
                             <SheetTitle>Edit Product</SheetTitle>
                             <SheetDescription>
-                                Make changes to the product information here. Click save when you're done.
+                                Make changes to the product information here. Click save when you&apos;re done.
                             </SheetDescription>
                         </SheetHeader>
                         <div className="space-y-4 mt-4">
