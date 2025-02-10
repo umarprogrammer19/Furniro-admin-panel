@@ -4,12 +4,12 @@ export const statuses = [
         label: "Pending",
     },
     {
-        value: "processing",
-        label: "Processing",
+        value: "completed",
+        label: "completed",
     },
     {
-        value: "success",
-        label: "Success",
+        value: "shipped",
+        label: "shipped",
     },
     {
         value: "failed",
