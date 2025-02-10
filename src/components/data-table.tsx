@@ -73,6 +73,7 @@ export function DataTable<TData, TValue>({ columns, data, rowActions }: DataTabl
                                     ))}
                                     {rowActions === "users" && <DataTableRowActions userId={(row.original as any).id} />}
                                     {rowActions === "products" && <DataTableRowActions productId={(row.original as any)._id} />}
+                                    {rowActions === "orders" && <DataTableRowActions orderId={(row.original as any)._id} />}
                                 </TableRow>
                             ))
                         ) : (
