@@ -19,7 +19,7 @@ interface DataTableRowActionsProps {
     orderId?: string
 }
 
-export function DataTableRowActions({ userId, productId }: DataTableRowActionsProps) {
+export function DataTableRowActions({ userId, productId, orderId }: DataTableRowActionsProps) {
     const [loading, setLoading] = useState(false)
     const [isDrawerOpen, setDrawerOpen] = useState(false)
     const [isProductDrawerOpen, setProductDrawerOpen] = useState(false)
@@ -176,6 +176,27 @@ export function DataTableRowActions({ userId, productId }: DataTableRowActionsPr
         }
     }
 
+    const handleOrderDelete = async () => {
+        try {
+            setLoading(true)
+            const response = await fetch(`${BASE_URL}/api/admin/orders/deleteOrder/${orderId}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("UFO_AUTH_TOKEN")}`,
+                },
+            })
+
+            if (!response.ok) {
+                throw new Error("Failed to delete the Order.")
+            }
+
+            toast.success("Order deleted successfully!")
+        } catch (error) {
+            toast.error(error instanceof Error ? error.message : "An unexpected error occurred")
+        } finally {
+            setLoading(false)
+        }
+    }
 
     return (
         <div className="flex items-center">
@@ -196,6 +217,11 @@ export function DataTableRowActions({ userId, productId }: DataTableRowActionsPr
                     )}
                     {productId && (
                         <DropdownMenuItem onSelect={handleProductDelete} className="text-red-600 focus:text-red-600">
+                            Delete
+                        </DropdownMenuItem>
+                    )}
+                    {orderId && (
+                        <DropdownMenuItem onSelect={handleOrderDelete} className="text-red-600 focus:text-red-600">
                             Delete
                         </DropdownMenuItem>
                     )}
