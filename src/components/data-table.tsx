@@ -72,7 +72,7 @@ export function DataTable<TData, TValue>({ columns, data, rowActions }: DataTabl
                                         <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                                     ))}
                                     {rowActions === "users" && <DataTableRowActions userId={(row.original as any).id} />}
-                                    {rowActions === "products" && <DataTableRowActions productId={(row.original as any).id} />}
+                                    {rowActions === "products" && <DataTableRowActions productId={(row.original as any)._id} />}
                                 </TableRow>
                             ))
                         ) : (
