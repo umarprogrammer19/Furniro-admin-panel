@@ -268,7 +268,7 @@ export function DataTableRowActions({ userId, productId }: DataTableRowActionsPr
             )}
             {productId && (
                 <Sheet open={isProductDrawerOpen} onOpenChange={setProductDrawerOpen}>
-                    <SheetContent>
+                    <SheetContent className="overflow-auto">
                         <SheetHeader>
                             <SheetTitle>Edit Product</SheetTitle>
                             <SheetDescription>
