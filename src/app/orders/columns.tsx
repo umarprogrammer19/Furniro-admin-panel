@@ -1,17 +1,20 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
+import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import type { ColumnDef } from "@tanstack/react-table";
-
-import { DataTableColumnHeader } from "@/components/data-table-column-header";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { ChevronDown } from 'lucide-react';
+import { toast } from "sonner";
+import { updateOrderStatus } from "@/lib/api/orders";
 
 export type Order = {
     _id: string;
     customer: string;
     email: string;
     totalPrice: number;
-    status: string;
+    status: "pending" | "completed" | "shipped";
     orderDate: string;
 };
 
@@ -39,54 +42,72 @@ export const columns: ColumnDef<Order>[] = [
     },
     {
         accessorKey: "_id",
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Order ID" />,
-        cell: ({ row }) => <div className="font-mono">{row.getValue("_id")}</div>,
-        enableSorting: false,
-        enableHiding: false,
+        header: "Order ID",
+        cell: ({ row }) => <div className="font-medium">{row.getValue("_id")}</div>,
     },
     {
         accessorKey: "customer",
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Customer Name" />,
+        header: "Customer",
         cell: ({ row }) => <div>{row.getValue("customer")}</div>,
-        enableSorting: true,
-        enableHiding: true,
     },
     {
         accessorKey: "email",
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Customer Email" />,
+        header: "Email",
         cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
-        enableSorting: true,
-        enableHiding: true,
     },
     {
         accessorKey: "totalPrice",
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Total Price" />,
+        header: "Total Price",
         cell: ({ row }) => {
-            const price = Number(row.getValue("totalPrice"));
-            return <div className="text-right font-medium">${price.toFixed(2)}</div>;
+            const amount: number = row.getValue("totalPrice");
+            const formatted = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+            }).format(amount);
+            return <div className="text-right font-medium">{formatted}</div>;
         },
-        enableSorting: true,
-        enableHiding: true,
     },
     {
         accessorKey: "status",
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
+        header: "Status",
         cell: ({ row }) => {
-            const status = row.getValue("status") as string;
+            const orderId: string = row.original._id;
+            const currentStatus: "pending" | "completed" | "shipped" = row.getValue("status");
+
+            const handleStatusUpdate = async (newStatus: "pending" | "completed" | "shipped") => {
+                try {
+                    await updateOrderStatus(orderId, newStatus);
+                    toast.success(`Order status updated to ${newStatus}`);
+                    row.original.status = newStatus;
+                } catch (error) {
+                    toast.error("Error updating order status");
+                }
+            };
+
             return (
-                <Badge variant={status === "completed" ? "default" : status === "pending" ? "destructive" : "secondary"}>
-                    {status.charAt(0).toUpperCase() + status.slice(1)}
-                </Badge>
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="h-8 w-full justify-start">
+                            <Badge
+                                variant={currentStatus === "pending" ? "warning" : currentStatus === "completed" ? "success" : "info"}
+                            >
+                                {currentStatus}
+                            </Badge>
+                            <ChevronDown className="ml-2 h-4 w-4 opacity-50" />
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="start">
+                        <DropdownMenuItem onSelect={() => handleStatusUpdate("pending")}>Pending</DropdownMenuItem>
+                        <DropdownMenuItem onSelect={() => handleStatusUpdate("completed")}>Completed</DropdownMenuItem>
+                        <DropdownMenuItem onSelect={() => handleStatusUpdate("shipped")}>Shipped</DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
             );
         },
-        enableSorting: true,
-        enableHiding: true,
     },
     {
         accessorKey: "orderDate",
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Order Date" />,
+        header: "Order Date",
         cell: ({ row }) => <div>{row.getValue("orderDate")}</div>,
-        enableSorting: true,
-        enableHiding: true,
     },
 ];
