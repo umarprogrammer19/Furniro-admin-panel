@@ -17,14 +17,13 @@ import { DataTableToolbar } from "@/components/data-table-toolbar";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DataTableRowActions } from "./data-table-row-actions";
 
-// Generic Table Type -> Ab Users aur Products dono kaam kar sakte hain
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
-    rowActions?: boolean; // Users ke liye true, Products ke liye false
+    rowActions?: "users" | "products" | "orders";
 }
 
-export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data, rowActions }: DataTableProps<TData, TValue>) {
     const [rowSelection, setRowSelection] = React.useState({});
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
@@ -72,7 +71,8 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                                     ))}
-                                    <DataTableRowActions userId={(row.original as any).id} />
+                                    {rowActions === "users" && <DataTableRowActions userId={(row.original as any).id} />}
+                                    {rowActions === "products" && <DataTableRowActions productId={(row.original as any).id} />}
                                 </TableRow>
                             ))
                         ) : (

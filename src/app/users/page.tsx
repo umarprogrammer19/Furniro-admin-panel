@@ -68,7 +68,7 @@ export default function UsersPage() {
                 <p className="text-red-500">{error}</p>
             ) : (
                 <>
-                    <DataTable columns={columns} data={users} />
+                    <DataTable columns={columns} data={users} rowActions="users" />
                     <DataTablePagination
                         currentPage={currentPage}
                         totalPages={totalPages}

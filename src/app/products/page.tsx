@@ -73,7 +73,7 @@ export default function ProductsPage() {
                 <p className="text-red-500">{error}</p>
             ) : (
                 <>
-                    <DataTable columns={columns} data={products} />
+                    <DataTable columns={columns} data={products} rowActions="products"/>
                     <DataTablePagination
                         currentPage={currentPage}
                         totalPages={totalPages}

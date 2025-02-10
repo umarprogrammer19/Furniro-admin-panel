@@ -11,7 +11,9 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "
 import { BASE_URL } from "@/lib/api/base-url"
 
 interface DataTableRowActionsProps {
-    userId: string
+    userId?: string
+    productId?: string;
+    orderId?: string;
 }
 
 export function DataTableRowActions({ userId }: DataTableRowActionsProps) {
