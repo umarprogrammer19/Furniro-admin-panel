@@ -89,16 +89,11 @@ export const columns: ColumnDef<Order>[] = [
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="h-8 w-full justify-start">
                             <Badge
-                                variant={
-                                    currentStatus === "pending"
-                                        ? "secondary"
-                                        : currentStatus === "completed"
-                                            ? "default"
-                                            : "outline"
-                                }
+                                className={` ${currentStatus === "pending" ? "bg-yellow-500 text-white" : ""} ${currentStatus === "completed" ? "bg-green-500 text-white" : ""} ${currentStatus === "shipped" ? "bg-blue-500 text-white" : ""}`}
                             >
                                 {currentStatus}
                             </Badge>
+
                             <ChevronDown className="ml-2 h-4 w-4 opacity-50" />
                         </Button>
                     </DropdownMenuTrigger>
