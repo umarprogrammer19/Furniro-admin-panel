@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { BASE_URL } from "./base-url";
 
-export async function addProduct(formData: FormData) {
+export async function addProduct(formData: FormData, token: string) {
     try {
         const title = formData.get("title")?.toString().trim();
         const description = formData.get("description")?.toString().trim();
@@ -36,11 +36,11 @@ export async function addProduct(formData: FormData) {
         formDataToSend.append("category", category);
         formDataToSend.append("image", imageFile);
 
-        const response = await fetch(`${BASE_URL}/api/v2/addProduct`, {
+        const response = await fetch(`${BASE_URL}/api/v2/addProducts`, {
             method: "POST",
             body: formDataToSend,
             headers: {
-                "Authorization": `Bearer ${localStorage.getItem("UFO_AUTH_TOKEN")}`,
+                "Authorization": `Bearer ${token}`,
             },
         });
 
@@ -50,7 +50,8 @@ export async function addProduct(formData: FormData) {
         }
 
         const result = await response.json();
-        revalidatePath("/products"); // Revalidate cache
+
+        revalidatePath("/products");
         return { success: true, message: result.message };
 
     } catch (error) {

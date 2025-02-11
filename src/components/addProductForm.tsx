@@ -73,11 +73,23 @@ export default function AddProductForm() {
         });
         formData.append("image", values.image[0]);
 
-        const result = await addProduct(formData);
+        const result = await addProduct(formData, localStorage.getItem("UFO_AUTH_TOKEN") ?? "");
         setIsSubmitting(false);
 
         if (result.success) {
             toast.success("Product added successfully!");
+            form.reset({
+                title: "",
+                description: "",
+                price: "",
+                stock: "",
+                tags: "",
+                discountPercentage: "",
+                isNew: false,
+                category: "items",
+                image: null,
+            });
+            
             router.refresh();
         } else {
             toast.error(result.message);
