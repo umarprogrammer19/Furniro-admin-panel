@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { motion } from "framer-motion"
-import { type LucideIcon, Home, Users, ShoppingCart, Package, LogOut, LogIn } from "lucide-react"
+import { type LucideIcon, Home, Users, ShoppingCart, Package, LogOut, LogIn, ShoppingBag } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { ModeToggle } from "@/components/mode-toggle"
@@ -20,6 +20,7 @@ const navItems: NavItem[] = [
     { title: "Users", href: "/users", icon: Users },
     { title: "Orders", href: "/orders", icon: ShoppingCart },
     { title: "Products", href: "/products", icon: Package },
+    { title: "Post", href: "/products/post", icon: ShoppingBag },
 ]
 
 export function Sidebar() {
