@@ -7,8 +7,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
-import { toast } from "@/components/ui/use-toast"
 import { addProduct } from "@/lib/api/add-product"
+import { toast } from "@/hooks/use-toast"
 
 export default function AddProductPage() {
     const router = useRouter()
