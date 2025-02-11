@@ -80,7 +80,8 @@ export const columns: ColumnDef<Order>[] = [
                     toast.success(`Order status updated to ${newStatus}`);
                     row.original.status = newStatus;
                 } catch (error) {
-                    toast.error("Error updating order status");
+                    if (error instanceof Error)
+                        toast.error(error.message);
                 }
             };
 
