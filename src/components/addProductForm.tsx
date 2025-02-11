@@ -2,43 +2,28 @@
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { addProduct } from "@/lib/api/add-product";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
-
-const productSchema = z.object({
-    title: z.string().min(3, "Title must be at least 3 characters"),
-    description: z.string().min(10, "Description must be at least 10 characters"),
-    price: z.number().min(1, "Price must be greater than 0"),
-    stock: z.number().min(0, "Stock cannot be negative"),
-    tags: z.string().optional(),
-    discountPercentage: z.number().min(0).max(100, "Discount must be between 0-100").optional(),
-    isNew: z.boolean(),
-    category: z.enum(["chair", "sofa", "light", "bed", "table", "items"]),
-    image: z.instanceof(File, { message: "Image is required" }),
-});
 
 export default function AddProductForm() {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const form = useForm({
-        resolver: zodResolver(productSchema),
         defaultValues: {
             title: "",
             description: "",
-            price: 0,
-            stock: 0,
+            price: "",
+            stock: "",
             tags: "",
-            discountPercentage: 0,
+            discountPercentage: "",
             isNew: false,
             category: "items",
             image: null,
@@ -47,12 +32,45 @@ export default function AddProductForm() {
 
     async function handleSubmit(values: any) {
         setIsSubmitting(true);
+
+        // **Manual Validation**
+        if (!values.title || values.title.length < 3) {
+            toast.error("Title must be at least 3 characters long.");
+            setIsSubmitting(false);
+            return;
+        }
+        if (!values.description || values.description.length < 10) {
+            toast.error("Description must be at least 10 characters.");
+            setIsSubmitting(false);
+            return;
+        }
+        if (!values.price || isNaN(Number(values.price)) || Number(values.price) <= 0) {
+            toast.error("Please enter a valid price.");
+            setIsSubmitting(false);
+            return;
+        }
+        if (!values.stock || isNaN(Number(values.stock)) || Number(values.stock) < 0) {
+            toast.error("Stock cannot be negative.");
+            setIsSubmitting(false);
+            return;
+        }
+        if (!values.category) {
+            toast.error("Please select a valid category.");
+            setIsSubmitting(false);
+            return;
+        }
+        if (!values.image || values.image.length === 0) {
+            toast.error("Please upload a product image.");
+            setIsSubmitting(false);
+            return;
+        }
+
         const formData = new FormData();
-
         Object.entries(values).forEach(([key, value]) => {
-            if (key !== "image") formData.append(key, value as string);
+            if (key !== "image") {
+                formData.append(key, value as string);
+            }
         });
-
         formData.append("image", values.image[0]);
 
         const result = await addProduct(formData);
@@ -71,6 +89,7 @@ export default function AddProductForm() {
             <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4 p-6 border rounded-lg shadow-md">
                 <h2 className="text-2xl font-bold">Add New Product</h2>
 
+                {/* Title */}
                 <FormField
                     control={form.control}
                     name="title"
@@ -80,11 +99,11 @@ export default function AddProductForm() {
                             <FormControl>
                                 <Input placeholder="Product title" {...field} />
                             </FormControl>
-                            <FormMessage />
                         </FormItem>
                     )}
                 />
 
+                {/* Description */}
                 <FormField
                     control={form.control}
                     name="description"
@@ -94,11 +113,11 @@ export default function AddProductForm() {
                             <FormControl>
                                 <Textarea placeholder="Product description" {...field} />
                             </FormControl>
-                            <FormMessage />
                         </FormItem>
                     )}
                 />
 
+                {/* Price & Stock */}
                 <div className="grid grid-cols-2 gap-4">
                     <FormField
                         control={form.control}
@@ -109,7 +128,6 @@ export default function AddProductForm() {
                                 <FormControl>
                                     <Input type="number" {...field} />
                                 </FormControl>
-                                <FormMessage />
                             </FormItem>
                         )}
                     />
@@ -123,12 +141,12 @@ export default function AddProductForm() {
                                 <FormControl>
                                     <Input type="number" {...field} />
                                 </FormControl>
-                                <FormMessage />
                             </FormItem>
                         )}
                     />
                 </div>
 
+                {/* Tags */}
                 <FormField
                     control={form.control}
                     name="tags"
@@ -138,11 +156,11 @@ export default function AddProductForm() {
                             <FormControl>
                                 <Input placeholder="e.g. modern, wooden" {...field} />
                             </FormControl>
-                            <FormMessage />
                         </FormItem>
                     )}
                 />
 
+                {/* Discount */}
                 <FormField
                     control={form.control}
                     name="discountPercentage"
@@ -152,11 +170,11 @@ export default function AddProductForm() {
                             <FormControl>
                                 <Input type="number" {...field} />
                             </FormControl>
-                            <FormMessage />
                         </FormItem>
                     )}
                 />
 
+                {/* New Arrival Checkbox */}
                 <FormField
                     control={form.control}
                     name="isNew"
@@ -168,6 +186,7 @@ export default function AddProductForm() {
                     )}
                 />
 
+                {/* Category Select */}
                 <FormField
                     control={form.control}
                     name="category"
@@ -187,11 +206,11 @@ export default function AddProductForm() {
                                     <SelectItem value="items">Items</SelectItem>
                                 </SelectContent>
                             </Select>
-                            <FormMessage />
                         </FormItem>
                     )}
                 />
 
+                {/* Image Upload */}
                 <FormField
                     control={form.control}
                     name="image"
@@ -201,11 +220,11 @@ export default function AddProductForm() {
                             <FormControl>
                                 <Input type="file" accept="image/*" onChange={(e) => field.onChange(e.target.files)} />
                             </FormControl>
-                            <FormMessage />
                         </FormItem>
                     )}
                 />
 
+                {/* Submit Button */}
                 <Button type="submit" disabled={isSubmitting} className="w-full">
                     {isSubmitting ? "Adding..." : "Add Product"}
                 </Button>
