@@ -15,7 +15,7 @@ interface NavItem {
     icon: LucideIcon
 }
 
-const navItems: NavItem[] = [
+export const navItems: NavItem[] = [
     { title: "Dashboard", href: "/", icon: Home },
     { title: "Users", href: "/users", icon: Users },
     { title: "Orders", href: "/orders", icon: ShoppingCart },
