@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { LucideIcon, Home, Users, ShoppingCart, Package, LogOut, LogIn, ShoppingBag } from "lucide-react";
+import { LucideIcon, Home, Users, ShoppingCart, Package, LogOut, LogIn, ShoppingBag, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/mode-toggle";
@@ -21,6 +21,7 @@ export const navItems: NavItem[] = [
     { title: "Orders", href: "/orders", icon: ShoppingCart },
     { title: "Products", href: "/products", icon: Package },
     { title: "Post", href: "/products/post", icon: ShoppingBag },
+    { title: "Register", href: "/register", icon: User },
 ];
 
 export function Sidebar() {
