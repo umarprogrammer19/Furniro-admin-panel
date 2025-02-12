@@ -21,9 +21,10 @@ interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
     rowActions?: "users" | "products" | "orders";
+    refreshUsers?: () => void;
 }
 
-export function DataTable<TData, TValue>({ columns, data, rowActions }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data, rowActions, refreshUsers }: DataTableProps<TData, TValue>) {
     const [rowSelection, setRowSelection] = React.useState({});
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
@@ -50,7 +51,6 @@ export function DataTable<TData, TValue>({ columns, data, rowActions }: DataTabl
 
     return (
         <div className="space-y-4">
-            <DataTableToolbar table={table} />
             <div className="rounded-md border">
                 <Table>
                     <TableHeader>
@@ -71,9 +71,7 @@ export function DataTable<TData, TValue>({ columns, data, rowActions }: DataTabl
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                                     ))}
-                                    {rowActions === "users" && <DataTableRowActions userId={(row.original as any).id} />}
-                                    {rowActions === "products" && <DataTableRowActions productId={(row.original as any)._id} />}
-                                    {rowActions === "orders" && <DataTableRowActions orderId={(row.original as any)._id} />}
+                                    {rowActions === "users" && <DataTableRowActions userId={(row.original as any).id} refreshUsers={refreshUsers} />}
                                 </TableRow>
                             ))
                         ) : (
