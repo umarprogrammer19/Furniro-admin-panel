@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { motion } from "framer-motion"
-import { type LucideIcon, Home, Users, ShoppingCart, Package, LogOut, LogIn, ShoppingBag } from "lucide-react"
+import { TypeIcon as type, LucideIcon, Home, Users, ShoppingCart, Package, LogOut, LogIn, ShoppingBag } from 'lucide-react'
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { ModeToggle } from "@/components/mode-toggle"
@@ -29,7 +29,6 @@ export function Sidebar() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
-        // Only access localStorage on the client-side
         if (typeof window !== "undefined") {
             const authToken = localStorage.getItem("UFO_AUTH_TOKEN");
             setIsAuthenticated(!!authToken);
@@ -44,7 +43,7 @@ export function Sidebar() {
     }
 
     return (
-        <div className="flex h-full w-64 flex-col justify-between bg-background p-4 shadow-lg">
+        <div className="hidden sm:flex h-full w-64 flex-col justify-between bg-background p-4 shadow-lg">
             <div>
                 <h1 className="mb-8 text-2xl font-bold">Admin Panel</h1>
                 <nav className="space-y-2">
