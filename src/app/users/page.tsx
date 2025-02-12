@@ -1,18 +1,19 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { DataTable } from "@/components/data-table"
-import { columns, type User } from "./columns"
-import { DataTablePagination } from "@/components/data-table-pagination"
-import { BASE_URL } from "@/lib/api/base-url"
-import { useRouter } from "next/navigation"
+import * as React from "react";
+import { DataTable } from "@/components/data-table";
+import { columns, type User } from "./columns";
+import { DataTablePagination } from "@/components/data-table-pagination";
+import { BASE_URL } from "@/lib/api/base-url";
+import { useRouter } from "next/navigation";
+import { Skeleton } from "@/components/ui/skeleton"; // Import Skeleton component
 
 export default function UsersPage() {
-    const [users, setUsers] = React.useState<User[]>([])
-    const [loading, setLoading] = React.useState<boolean>(true)
-    const [error, setError] = React.useState<string | null>(null)
-    const [currentPage, setCurrentPage] = React.useState<number>(1)
-    const [totalPages, setTotalPages] = React.useState<number>(1)
+    const [users, setUsers] = React.useState<User[]>([]);
+    const [loading, setLoading] = React.useState<boolean>(true);
+    const [error, setError] = React.useState<string | null>(null);
+    const [currentPage, setCurrentPage] = React.useState<number>(1);
+    const [totalPages, setTotalPages] = React.useState<number>(1);
     const router = useRouter();
 
     React.useEffect(() => {
@@ -61,7 +62,17 @@ export default function UsersPage() {
         <div className="space-y-4">
             <h1 className="text-3xl font-bold">Users</h1>
             {loading ? (
-                <p>Loading users...</p>
+                // Skeleton UI while loading
+                <div className="space-y-4">
+                    <Skeleton className="h-10 w-1/4" />
+                    <div className="space-y-2">
+                        <Skeleton className="h-8 w-full" />
+                        <Skeleton className="h-8 w-full" />
+                        <Skeleton className="h-8 w-full" />
+                        <Skeleton className="h-8 w-full" />
+                        <Skeleton className="h-8 w-full" />
+                    </div>
+                </div>
             ) : error ? (
                 <p className="text-red-500">{error}</p>
             ) : (
