@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown } from 'lucide-react';
 import { toast } from "sonner";
 import { updateOrderStatus } from "@/lib/api/fetchOrders";
+import { useRouter } from "next/navigation";
 
 export type Order = {
     _id: string;
@@ -17,7 +18,7 @@ export type Order = {
     status: "pending" | "completed" | "shipped";
     orderDate: string;
 };
-
+const router = useRouter();
 export const columns: ColumnDef<Order>[] = [
     {
         id: "select",
@@ -79,6 +80,7 @@ export const columns: ColumnDef<Order>[] = [
                     await updateOrderStatus(orderId, newStatus);
                     toast.success(`Order status updated to ${newStatus}`);
                     row.original.status = newStatus;
+                    router.refresh();
                 } catch (error) {
                     if (error instanceof Error)
                         toast.error(error.message);
