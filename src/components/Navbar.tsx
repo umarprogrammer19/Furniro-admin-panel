@@ -10,8 +10,6 @@ import { ModeToggle } from "@/components/mode-toggle"
 import { navItems } from "@/components/sidebar" 
 
 export function Navbar() {
-    const pathname = usePathname()
-    const router = useRouter()
     const [isOpen, setIsOpen] = useState(false)
 
     return (
