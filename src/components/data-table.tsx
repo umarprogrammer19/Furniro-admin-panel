@@ -22,6 +22,7 @@ interface DataTableProps<TData, TValue> {
     data: TData[];
     rowActions?: "users" | "products" | "orders";
     refreshUsers?: () => void;
+    refreshProducts?: () => void;
 }
 
 export function DataTable<TData, TValue>({ columns, data, rowActions, refreshUsers }: DataTableProps<TData, TValue>) {

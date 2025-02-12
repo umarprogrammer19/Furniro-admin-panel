@@ -21,7 +21,7 @@ export default function ProductsPage() {
         if (!token) router.push("/login");
     }, []);
 
-    async function fetchProducts(page: number) {
+    const fetchProducts = async (page: number) => {
         setLoading(true);
         setError(null);
 
@@ -73,7 +73,7 @@ export default function ProductsPage() {
                 <p className="text-red-500">{error}</p>
             ) : (
                 <>
-                    <DataTable columns={columns} data={products} rowActions="products" />
+                    <DataTable columns={columns} data={products} rowActions="products" refreshProducts={() => fetchProducts(currentPage)} />
                     <DataTablePagination
                         currentPage={currentPage}
                         totalPages={totalPages}
