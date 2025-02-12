@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 
-import { UserAuthForm } from "@/components/user-auth-form"
+import { UserSignUpForm } from "@/components/user-register-form"
 
 export const metadata: Metadata = {
     title: "Sign Up",
@@ -17,7 +17,7 @@ export default function SignUp() {
                     <h1 className="text-2xl font-semibold tracking-tight">Welcome back</h1>
                     <p className="text-sm text-muted-foreground">Enter your Information To Sign Up</p>
                 </div>
-                <UserAuthForm />
+                <UserSignUpForm />
                 <p className="px-8 text-center text-sm text-muted-foreground">
                     <Link href="/login" className="hover:text-brand underline underline-offset-4">
                         Already have an account? Login
