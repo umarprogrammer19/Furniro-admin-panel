@@ -1,14 +1,13 @@
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
-import { Checkbox } from "@/components/ui/checkbox";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { updateOrderStatus } from "@/lib/api/fetchOrders";
+import { ColumnDef } from "@tanstack/react-table";
 import { ChevronDown } from 'lucide-react';
 import { toast } from "sonner";
-import { updateOrderStatus } from "@/lib/api/fetchOrders";
-import { useRouter } from "next/navigation";
 
 export type Order = {
     _id: string;
@@ -18,7 +17,6 @@ export type Order = {
     status: "pending" | "completed" | "shipped";
     orderDate: string;
 };
-const router = useRouter();
 export const columns: ColumnDef<Order>[] = [
     {
         id: "select",
@@ -72,6 +70,7 @@ export const columns: ColumnDef<Order>[] = [
         accessorKey: "status",
         header: "Status",
         cell: ({ row }) => {
+
             const orderId: string = row.original._id;
             const currentStatus: "pending" | "completed" | "shipped" = row.getValue("status");
 
@@ -80,7 +79,6 @@ export const columns: ColumnDef<Order>[] = [
                     await updateOrderStatus(orderId, newStatus);
                     toast.success(`Order status updated to ${newStatus}`);
                     row.original.status = newStatus;
-                    router.refresh();
                 } catch (error) {
                     if (error instanceof Error)
                         toast.error(error.message);
