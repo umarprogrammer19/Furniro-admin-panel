@@ -6,7 +6,7 @@ import { columns, type User } from "./columns";
 import { DataTablePagination } from "@/components/data-table-pagination";
 import { BASE_URL } from "@/lib/api/base-url";
 import { useRouter } from "next/navigation";
-import { Skeleton } from "@/components/ui/skeleton"; // Import Skeleton component
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function UsersPage() {
     const [users, setUsers] = React.useState<User[]>([]);
@@ -62,7 +62,6 @@ export default function UsersPage() {
         <div className="space-y-4">
             <h1 className="text-3xl font-bold">Users</h1>
             {loading ? (
-                // Skeleton UI while loading
                 <div className="space-y-4">
                     <Skeleton className="h-10 w-1/4" />
                     <div className="space-y-2">

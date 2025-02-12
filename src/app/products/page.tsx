@@ -6,6 +6,7 @@ import { columns, type Product } from "./columns";
 import { DataTablePagination } from "@/components/data-table-pagination";
 import { BASE_URL } from "@/lib/api/base-url";
 import { useRouter } from "next/navigation";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ProductsPage() {
     const [products, setProducts] = React.useState<Product[]>([]);
@@ -58,7 +59,7 @@ export default function ProductsPage() {
         } finally {
             setLoading(false);
         }
-    }
+    };
 
     React.useEffect(() => {
         fetchProducts(currentPage);
@@ -68,7 +69,16 @@ export default function ProductsPage() {
         <div className="space-y-4">
             <h1 className="text-3xl font-bold">Products</h1>
             {loading ? (
-                <p>Loading products...</p>
+                <div className="space-y-4">
+                    <Skeleton className="h-10 w-1/4" />
+                    <div className="space-y-2">
+                        <Skeleton className="h-8 w-full" />
+                        <Skeleton className="h-8 w-full" />
+                        <Skeleton className="h-8 w-full" />
+                        <Skeleton className="h-8 w-full" />
+                        <Skeleton className="h-8 w-full" />
+                    </div>
+                </div>
             ) : error ? (
                 <p className="text-red-500">{error}</p>
             ) : (
