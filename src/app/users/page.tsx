@@ -14,50 +14,48 @@ export default function UsersPage() {
     const [currentPage, setCurrentPage] = React.useState<number>(1)
     const [totalPages, setTotalPages] = React.useState<number>(1)
     const router = useRouter();
+
     React.useEffect(() => {
         const token = localStorage.getItem("UFO_AUTH_TOKEN");
         if (!token) router.push("/login");
-    }, [])
-    React.useEffect(() => {
-        async function fetchUsers(page: number) {
-            setLoading(true)
-            setError(null)
+    }, []);
 
-            try {
-                const response = await fetch(`${BASE_URL}/api/admin/users?page=${page}`, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${localStorage.getItem("UFO_AUTH_TOKEN")}`,
-                    },
-                })
+    const fetchUsers = async (page: number) => {
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await fetch(`${BASE_URL}/api/admin/users?page=${page}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("UFO_AUTH_TOKEN")}`,
+                },
+            });
 
-                if (!response.ok) {
-                    throw new Error("Failed to fetch users")
-                }
-
-                const data = await response.json()
-
-                const formattedUsers: User[] = data.users.map((user: any) => ({
-                    id: user._id,
-                    name: user.fullname,
-                    email: user.email,
-                    role: user.role.charAt(0).toUpperCase() + user.role.slice(1),
-                    status: "Active",
-                }))
-
-                setUsers(formattedUsers)
-                setCurrentPage(data.currentPage)
-                setTotalPages(data.totalPages)
-            } catch (err: any) {
-                setError(err.message)
-            } finally {
-                setLoading(false)
+            if (!response.ok) {
+                throw new Error("Failed to fetch users");
             }
-        }
 
-        fetchUsers(currentPage)
-    }, [currentPage])
+            const data = await response.json();
+            setUsers(data.users.map((user: any) => ({
+                id: user._id,
+                name: user.fullname,
+                email: user.email,
+                role: user.role.charAt(0).toUpperCase() + user.role.slice(1),
+                status: "Active",
+            })));
+            setCurrentPage(data.currentPage);
+            setTotalPages(data.totalPages);
+        } catch (err: any) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    React.useEffect(() => {
+        fetchUsers(currentPage);
+    }, [currentPage]);
 
     return (
         <div className="space-y-4">
@@ -68,7 +66,7 @@ export default function UsersPage() {
                 <p className="text-red-500">{error}</p>
             ) : (
                 <>
-                    <DataTable columns={columns} data={users} rowActions="users" />
+                    <DataTable columns={columns} data={users} rowActions="users" refreshUsers={() => fetchUsers(currentPage)} />
                     <DataTablePagination
                         currentPage={currentPage}
                         totalPages={totalPages}
@@ -77,5 +75,5 @@ export default function UsersPage() {
                 </>
             )}
         </div>
-    )
+    );
 }
