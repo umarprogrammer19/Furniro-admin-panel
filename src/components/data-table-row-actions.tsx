@@ -19,9 +19,10 @@ interface DataTableRowActionsProps {
     orderId?: string
     refreshUsers?: () => void;
     refreshProducts?: () => void;
+    refreshOrders?: () => void;
 }
 
-export function DataTableRowActions({ userId, productId, orderId, refreshUsers, refreshProducts }: DataTableRowActionsProps) {
+export function DataTableRowActions({ userId, productId, orderId, refreshUsers, refreshProducts, refreshOrders }: DataTableRowActionsProps) {
     const [loading, setLoading] = useState(false)
     const [isDrawerOpen, setDrawerOpen] = useState(false)
     const [isProductDrawerOpen, setProductDrawerOpen] = useState(false)
@@ -194,7 +195,8 @@ export function DataTableRowActions({ userId, productId, orderId, refreshUsers, 
                 throw new Error("Failed to delete the Order.")
             }
 
-            toast.success("Order deleted successfully!")
+            toast.success("Order deleted successfully!");
+            refreshOrders?.();
         } catch (error) {
             toast.error(error instanceof Error ? error.message : "An unexpected error occurred")
         } finally {

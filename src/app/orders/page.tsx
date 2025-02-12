@@ -62,7 +62,7 @@ export default function OrdersPage() {
                 <OrdersSkeleton />
             ) : (
                 <>
-                    <DataTable columns={columns} data={orders} rowActions="orders" />
+                    <DataTable columns={columns} data={orders} rowActions="orders" refreshOrders={() => loadOrders(currentPage)} />
                     <DataTablePagination
                         currentPage={currentPage}
                         totalPages={totalPages}
