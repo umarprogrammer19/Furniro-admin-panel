@@ -17,9 +17,10 @@ interface DataTableRowActionsProps {
     userId?: string
     productId?: string
     orderId?: string
+    refreshUsers?: () => void;
 }
 
-export function DataTableRowActions({ userId, productId, orderId }: DataTableRowActionsProps) {
+export function DataTableRowActions({ userId, productId, orderId, refreshUsers }: DataTableRowActionsProps) {
     const [loading, setLoading] = useState(false)
     const [isDrawerOpen, setDrawerOpen] = useState(false)
     const [isProductDrawerOpen, setProductDrawerOpen] = useState(false)
@@ -76,12 +77,34 @@ export function DataTableRowActions({ userId, productId, orderId }: DataTableRow
         return valid
     }
 
-    // Edit User API Request
+    const handleUserDelete = async () => {
+        try {
+            setLoading(true);
+            const response = await fetch(`${BASE_URL}/api/admin/users/delete/${userId}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("UFO_AUTH_TOKEN")}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to delete the user.");
+            }
+
+            toast.success("User deleted successfully!");
+            refreshUsers?.();
+        } catch (error) {
+            toast.error(error instanceof Error ? error.message : "An unexpected error occurred");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const handleSubmitUserEdit = async () => {
-        if (!validateForm()) return
+        if (!validateForm()) return;
 
         try {
-            setLoading(true)
+            setLoading(true);
             const response = await fetch(`${BASE_URL}/api/admin/users/update/${userId}`, {
                 method: "PATCH",
                 headers: {
@@ -89,43 +112,21 @@ export function DataTableRowActions({ userId, productId, orderId }: DataTableRow
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(formData),
-            })
+            });
 
             if (!response.ok) {
-                throw new Error("Failed to update the user.")
+                throw new Error("Failed to update the user.");
             }
 
-            toast.success("User updated successfully!")
-            setDrawerOpen(false)
+            toast.success("User updated successfully!");
+            setDrawerOpen(false);
+            refreshUsers?.(); // Refresh users immediately
         } catch (error) {
-            toast.error(error instanceof Error ? error.message : "An unexpected error occurred")
+            toast.error(error instanceof Error ? error.message : "An unexpected error occurred");
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
-    }
-
-    // Delete User API
-    const handleUserDelete = async () => {
-        try {
-            setLoading(true)
-            const response = await fetch(`${BASE_URL}/api/admin/users/delete/${userId}`, {
-                method: "DELETE",
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("UFO_AUTH_TOKEN")}`,
-                },
-            })
-
-            if (!response.ok) {
-                throw new Error("Failed to delete the user.")
-            }
-
-            toast.success("User deleted successfully!")
-        } catch (error) {
-            toast.error(error instanceof Error ? error.message : "An unexpected error occurred")
-        } finally {
-            setLoading(false)
-        }
-    }
+    };
 
     // Delete Product API
     const handleProductDelete = async () => {
