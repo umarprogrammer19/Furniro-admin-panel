@@ -21,46 +21,46 @@ export default function ProductsPage() {
         if (!token) router.push("/login");
     }, []);
 
-    React.useEffect(() => {
-        async function fetchProducts(page: number) {
-            setLoading(true);
-            setError(null);
+    async function fetchProducts(page: number) {
+        setLoading(true);
+        setError(null);
 
-            try {
-                const response = await fetch(`${BASE_URL}/api/v2/products?page=${page}&limit=10`, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                });
+        try {
+            const response = await fetch(`${BASE_URL}/api/v2/products?page=${page}&limit=10`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
 
-                if (!response.ok) {
-                    throw new Error("Failed to fetch products");
-                }
-
-                const data = await response.json();
-
-                // Format API response correctly
-                const formattedProducts: Product[] = data.products.map((product: any) => ({
-                    _id: product._id,
-                    title: product.title,
-                    category: product.category,
-                    price: product.price,
-                    stock: product.stock,
-                    discountPercentage: product.discountPercentage,
-                    imageUrl: product.imageUrl,
-                }));
-
-                setProducts(formattedProducts);
-                setCurrentPage(data.currentPage);
-                setTotalPages(data.totalPages);
-            } catch (err: any) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
+            if (!response.ok) {
+                throw new Error("Failed to fetch products");
             }
-        }
 
+            const data = await response.json();
+
+            // Format API response correctly
+            const formattedProducts: Product[] = data.products.map((product: any) => ({
+                _id: product._id,
+                title: product.title,
+                category: product.category,
+                price: product.price,
+                stock: product.stock,
+                discountPercentage: product.discountPercentage,
+                imageUrl: product.imageUrl,
+            }));
+
+            setProducts(formattedProducts);
+            setCurrentPage(data.currentPage);
+            setTotalPages(data.totalPages);
+        } catch (err: any) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    React.useEffect(() => {
         fetchProducts(currentPage);
     }, [currentPage]);
 
@@ -73,7 +73,7 @@ export default function ProductsPage() {
                 <p className="text-red-500">{error}</p>
             ) : (
                 <>
-                    <DataTable columns={columns} data={products} rowActions="products"/>
+                    <DataTable columns={columns} data={products} rowActions="products" />
                     <DataTablePagination
                         currentPage={currentPage}
                         totalPages={totalPages}
