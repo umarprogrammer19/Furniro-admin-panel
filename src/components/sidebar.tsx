@@ -28,7 +28,6 @@ export function Sidebar() {
     const router = useRouter();
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-    // Check authentication status when component mounts
     useEffect(() => {
         if (typeof window !== "undefined") {
             const authToken = localStorage.getItem("UFO_AUTH_TOKEN");
@@ -39,7 +38,7 @@ export function Sidebar() {
     const handleLogout = () => {
         if (typeof window !== "undefined") {
             localStorage.removeItem("UFO_AUTH_TOKEN");
-            setIsAuthenticated(false); // Ensure state updates immediately
+            setIsAuthenticated(false);
         }
         router.push("/login");
     };
