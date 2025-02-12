@@ -1,13 +1,13 @@
 "use client"
 
-import { ModeToggle } from "@/components/mode-toggle"
+import { ModeToggle } from "@/components/mode-toggle";
 import { navItems } from "@/components/sidebar"; // Make sure this import works
-import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { LogIn, LogOut, Menu } from 'lucide-react'
-import Link from "next/link"
-import { usePathname, useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { LogIn, LogOut, Menu } from 'lucide-react';
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export function Navbar() {
     const router = useRouter()
