@@ -1,16 +1,15 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { usePathname, useRouter } from "next/navigation"
-import { Menu, LogOut, LogIn } from 'lucide-react'
+import { ModeToggle } from "@/components/mode-toggle"
+import { navItems } from "@/components/sidebar"; // Make sure this import works
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { ModeToggle } from "@/components/mode-toggle"
-import { navItems } from "@/components/sidebar" // Make sure this import works
+import { LogIn, LogOut, Menu } from 'lucide-react'
+import Link from "next/link"
+import { usePathname, useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
 
 export function Navbar() {
-    const pathname = usePathname()
     const router = useRouter()
     const [isOpen, setIsOpen] = useState(false)
     const [isAuthenticated, setIsAuthenticated] = useState(false)
