@@ -42,7 +42,7 @@ export const columns: ColumnDef<Product>[] = [
         accessorKey: "imageUrl",
         header: "Image",
         cell: ({ row }) => (
-            <Image src={row.getValue("imageUrl")} alt={row.original.title} width={50} height={50} className="rounded-md" />
+            <Image src={row.getValue("imageUrl")} alt={row.original.title} width={100} height={100} className="rounded-md w-16 h-16" />
         ),
         enableSorting: false,
         enableHiding: false,

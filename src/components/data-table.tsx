@@ -51,6 +51,7 @@ export function DataTable<TData, TValue>({ columns, data, rowActions, refreshUse
 
     return (
         <div className="space-y-4">
+            <DataTableToolbar table={table} />
             <div className="rounded-md border">
                 <Table>
                     <TableHeader>
@@ -72,6 +73,8 @@ export function DataTable<TData, TValue>({ columns, data, rowActions, refreshUse
                                         <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                                     ))}
                                     {rowActions === "users" && <DataTableRowActions userId={(row.original as any).id} refreshUsers={refreshUsers} />}
+                                    {rowActions === "products" && <DataTableRowActions productId={(row.original as any)._id} />}
+                                    {rowActions === "orders" && <DataTableRowActions orderId={(row.original as any)._id} />}
                                 </TableRow>
                             ))
                         ) : (
