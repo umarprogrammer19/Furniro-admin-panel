@@ -18,9 +18,10 @@ interface DataTableRowActionsProps {
     productId?: string
     orderId?: string
     refreshUsers?: () => void;
+    refreshProducts?: () => void;
 }
 
-export function DataTableRowActions({ userId, productId, orderId, refreshUsers }: DataTableRowActionsProps) {
+export function DataTableRowActions({ userId, productId, orderId, refreshUsers, refreshProducts }: DataTableRowActionsProps) {
     const [loading, setLoading] = useState(false)
     const [isDrawerOpen, setDrawerOpen] = useState(false)
     const [isProductDrawerOpen, setProductDrawerOpen] = useState(false)
@@ -120,7 +121,7 @@ export function DataTableRowActions({ userId, productId, orderId, refreshUsers }
 
             toast.success("User updated successfully!");
             setDrawerOpen(false);
-            refreshUsers?.(); // Refresh users immediately
+            refreshUsers?.();
         } catch (error) {
             toast.error(error instanceof Error ? error.message : "An unexpected error occurred");
         } finally {
@@ -143,7 +144,8 @@ export function DataTableRowActions({ userId, productId, orderId, refreshUsers }
                 throw new Error("Failed to delete the product.")
             }
 
-            toast.success("Product deleted successfully!")
+            toast.success("Product deleted successfully!");
+            refreshProducts?.()
         } catch (error) {
             toast.error(error instanceof Error ? error.message : "An unexpected error occurred")
         } finally {
@@ -169,7 +171,8 @@ export function DataTableRowActions({ userId, productId, orderId, refreshUsers }
             }
 
             toast.success("Product updated successfully!")
-            setProductDrawerOpen(false)
+            setProductDrawerOpen(false);
+            refreshProducts?.();
         } catch (error) {
             toast.error(error instanceof Error ? error.message : "An unexpected error occurred")
         } finally {

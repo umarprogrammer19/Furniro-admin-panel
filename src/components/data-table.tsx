@@ -25,7 +25,7 @@ interface DataTableProps<TData, TValue> {
     refreshProducts?: () => void;
 }
 
-export function DataTable<TData, TValue>({ columns, data, rowActions, refreshUsers }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data, rowActions, refreshUsers, refreshProducts }: DataTableProps<TData, TValue>) {
     const [rowSelection, setRowSelection] = React.useState({});
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
@@ -74,7 +74,7 @@ export function DataTable<TData, TValue>({ columns, data, rowActions, refreshUse
                                         <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                                     ))}
                                     {rowActions === "users" && <DataTableRowActions userId={(row.original as any).id} refreshUsers={refreshUsers} />}
-                                    {rowActions === "products" && <DataTableRowActions productId={(row.original as any)._id} />}
+                                    {rowActions === "products" && <DataTableRowActions productId={(row.original as any)._id} refreshProducts={refreshProducts} />}
                                     {rowActions === "orders" && <DataTableRowActions orderId={(row.original as any)._id} />}
                                 </TableRow>
                             ))
