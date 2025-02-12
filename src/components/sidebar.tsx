@@ -1,18 +1,18 @@
-"use client"
+"use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link"
-import { usePathname, useRouter } from "next/navigation"
-import { motion } from "framer-motion"
-import { TypeIcon as type, LucideIcon, Home, Users, ShoppingCart, Package, LogOut, LogIn, ShoppingBag } from 'lucide-react'
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { ModeToggle } from "@/components/mode-toggle"
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { LucideIcon, Home, Users, ShoppingCart, Package, LogOut, LogIn, ShoppingBag } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { ModeToggle } from "@/components/mode-toggle";
 
 interface NavItem {
-    title: string
-    href: string
-    icon: LucideIcon
+    title: string;
+    href: string;
+    icon: LucideIcon;
 }
 
 export const navItems: NavItem[] = [
@@ -21,13 +21,14 @@ export const navItems: NavItem[] = [
     { title: "Orders", href: "/orders", icon: ShoppingCart },
     { title: "Products", href: "/products", icon: Package },
     { title: "Post", href: "/products/post", icon: ShoppingBag },
-]
+];
 
 export function Sidebar() {
     const pathname = usePathname();
     const router = useRouter();
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+    // Check authentication status when component mounts
     useEffect(() => {
         if (typeof window !== "undefined") {
             const authToken = localStorage.getItem("UFO_AUTH_TOKEN");
@@ -38,9 +39,10 @@ export function Sidebar() {
     const handleLogout = () => {
         if (typeof window !== "undefined") {
             localStorage.removeItem("UFO_AUTH_TOKEN");
+            setIsAuthenticated(false); // Ensure state updates immediately
         }
         router.push("/login");
-    }
+    };
 
     return (
         <div className="hidden md:flex h-full w-64 flex-col justify-between bg-background p-4 shadow-lg">
@@ -68,12 +70,18 @@ export function Sidebar() {
                         Logout
                     </Button>
                 ) : (
-                    <Button variant="ghost" className="w-full justify-start" onClick={() => router.push("/login")}>
+                    <Button
+                        variant="ghost"
+                        className="w-full justify-start"
+                        onClick={() => {
+                            router.push("/login");
+                        }}
+                    >
                         <LogIn className="mr-2 h-4 w-4" />
                         Login
                     </Button>
                 )}
             </div>
         </div>
-    )
+    );
 }
