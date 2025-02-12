@@ -1,19 +1,44 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { Menu, X } from 'lucide-react'
+import { Menu, LogOut, LogIn } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { ModeToggle } from "@/components/mode-toggle"
-import { navItems } from "@/components/sidebar" 
+import { navItems } from "@/components/sidebar" // Make sure this import works
 
 export function Navbar() {
+    const pathname = usePathname()
+    const router = useRouter()
     const [isOpen, setIsOpen] = useState(false)
+    const [isAuthenticated, setIsAuthenticated] = useState(false)
+
+    useEffect(() => {
+        // Check authentication status
+        if (typeof window !== "undefined") {
+            const authToken = localStorage.getItem("UFO_AUTH_TOKEN")
+            setIsAuthenticated(!!authToken)
+        }
+    }, [])
+
+    const handleLogout = () => {
+        if (typeof window !== "undefined") {
+            localStorage.removeItem("UFO_AUTH_TOKEN")
+        }
+        setIsAuthenticated(false)
+        router.push("/login")
+        setIsOpen(false)
+    }
+
+    const handleLogin = () => {
+        router.push("/login")
+        setIsOpen(false)
+    }
 
     return (
-        <nav className="sm:hidden flex items-center justify-between p-4 bg-background shadow-lg">
+        <nav className="md:hidden flex items-center justify-between p-4 bg-background shadow-lg">
             <h1 className="text-xl font-bold">Admin Panel</h1>
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
                 <SheetTrigger asChild>
@@ -33,8 +58,19 @@ export function Navbar() {
                             </Link>
                         ))}
                     </nav>
-                    <div className="absolute bottom-4 left-4 right-4">
+                    <div className="absolute bottom-4 left-4 right-4 space-y-4">
                         <ModeToggle />
+                        {isAuthenticated ? (
+                            <Button variant="ghost" className="w-full justify-start" onClick={handleLogout}>
+                                <LogOut className="mr-2 h-4 w-4" />
+                                Logout
+                            </Button>
+                        ) : (
+                            <Button variant="ghost" className="w-full justify-start" onClick={handleLogin}>
+                                <LogIn className="mr-2 h-4 w-4" />
+                                Login
+                            </Button>
+                        )}
                     </div>
                 </SheetContent>
             </Sheet>

@@ -43,7 +43,7 @@ export function Sidebar() {
     }
 
     return (
-        <div className="hidden sm:flex h-full w-64 flex-col justify-between bg-background p-4 shadow-lg">
+        <div className="hidden md:flex h-full w-64 flex-col justify-between bg-background p-4 shadow-lg">
             <div>
                 <h1 className="mb-8 text-2xl font-bold">Admin Panel</h1>
                 <nav className="space-y-2">
